@@ -1,0 +1,36 @@
+name: "Bug report"
+description: "Something is not working as expected"
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: "What did you do, what did you expect, what happened instead?"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: "A minimal code sample or a step list. The smaller, the faster the fix."
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: "e.g. taskvisor 0.4.0, or a commit sha"
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: "OS + toolchain, e.g. Linux / rustc 1.90"
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or output
+      description: "Event output, backtrace, or logs, if available."
+      render: shell

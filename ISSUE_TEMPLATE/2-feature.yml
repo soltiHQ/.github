@@ -1,0 +1,21 @@
+name: "Feature request"
+description: "Suggest a new capability or an improvement"
+labels: ["feature"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: "What are you trying to do that is hard or impossible today?"
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: "How should it work? An API sketch is welcome, but optional."
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: "Workarounds you use now, or other designs you considered."
