@@ -1,4 +1,5 @@
 ```mermaid
+%%{init: {"theme": "default", "themeVariables": {"lineColor": "#8b949e", "edgeLabelBackground": "#e8e8e8"}}}%%
 flowchart TD
     fn["your async fn"] --> spec["TaskSpec<br/>restart · backoff · timeout"]
     spec --> sup["Supervisor<br/>run → fail → wait → retry"]
