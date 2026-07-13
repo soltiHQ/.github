@@ -1,13 +1,16 @@
 ```mermaid
-%%{init: {"theme": "default", "themeVariables": {"lineColor": "#8b949e", "edgeLabelBackground": "#e8e8e8"}}}%%
+%%{init: {"theme": "default", "flowchart": {"curve": "basis", "htmlLabels": true}, "themeVariables": {"primaryColor": "#eef2ff", "primaryTextColor": "#111827", "primaryBorderColor": "#7c3aed", "lineColor": "#64748b", "edgeLabelBackground": "#ffffff", "secondaryColor": "#f8fafc", "tertiaryColor": "#ffffff", "fontFamily": "Arial", "fontSize": "18px"}}}%%
 flowchart TD
-    fn["your async fn"] --> spec["TaskSpec<br/>restart · backoff · timeout"]
-    spec --> sup["Supervisor<br/>run → fail → wait → retry"]
-    sig["Ctrl+C / SIGTERM"] -.-> sup
+    input["Task + TaskSpec"] --> supervisor["Supervisor"]
+    supervisor --> runtime["Runtime components"]
+    runtime --> attempt["One task attempt"]
+    attempt --> decision{"Another attempt<br/>allowed?"}
+    decision -->|"yes"| delay["Failure backoff<br/>or optional success interval"]
+    delay --> attempt
+    decision -->|"no, fatal,<br/>or canceled"| outcome["Final outcome"]
 
-    sup -. "every lifecycle step<br/>best-effort" .-> bus["event bus"]
-    bus -.-> sub["your Subscribe<br/>metrics, alerts"]
-    bus -.-> tb["TracingBridge<br/>logs"]
-
-    sup == "guaranteed, one per task" ==> out["final outcome<br/>done / failed / canceled"]
+    runtime -.->|"cancellation from<br/>any phase"| outcome
+    runtime -.->|"best-effort"| bus["Event bus"]
+    bus -.-> subscribers["Subscribers<br/>logs · metrics · traces"]
+    outcome ==>|"watched task"| waiter["TaskWaiter"]
 ```
